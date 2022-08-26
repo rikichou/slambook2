@@ -12,10 +12,45 @@ using namespace Eigen;
 
 int main(int argc, char **argv) {
 
-    // create a Quaternion{x, y, z, w}
-    Quaterniond q = {0.3, 0.2, 0.2, 0.55};
-    q.normalize();
-    count << q.coeffs() << endl;
+    // create Quaternion{w, x, y, z} q1 and normalize
+    Quaterniond q1 = {0.55, 0.3, 0.2, 0.2};
+    cout << "org q1 " << q1.coeffs().transpose() << endl;
+    // normalize q1
+    q1.normalize();
+    cout << "normalized q1 " << q1.coeffs().transpose() << endl;
+
+    // create t1
+    Vector3d t1(0.7, 1.1, 0.2);
+    cout << "t1 " << t1 << endl;
+
+    // create p1
+    Vector3d p1(0.5, -0.1, 0.2);
+    cout << "p1 " << p1.transpose() << endl;
+
+    // create q2 and normalize
+    Quaterniond q2 = {-0.1, 0.3, -0.7, 0.2};
+    cout << "org q2 " << q2.coeffs().transpose() << endl;
+    // normalize
+    q2.normalize();
+    cout << "normalized q2 " << q2.coeffs().transpose() << endl;
+
+    // create t2
+    Vector3d t2(-0.1, 0.4, 0.8);
+    cout << "t2 " << t2 << endl;
+
+
+    // Just for debug
+
+    // create transofrom matrix for Tcw
+    Isometry3d Tc1w(q1);
+    Tc1w.pretranslate(t1);
+
+    Isometry3d Tc2w(q2);
+    Tc2w.pretranslate(t2);
+
+    cout << Tc2w * Tc1w.inverse() * p1 << endl;
+
+
 
   // Eigen/Geometry 模块提供了各种旋转和平移的表示
   // 3D 旋转矩阵直接使用 Matrix3d 或 Matrix3f
